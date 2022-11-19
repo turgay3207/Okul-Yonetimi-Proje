@@ -1,0 +1,352 @@
+Index: src/main/java/okulyonetimi/yeni/Ogretmen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package okulyonetimi.yeni;\r\n\r\nimport okulyonetimi.OgretmenPojo;\r\nimport okulyonetimi.OkulAnasayfa;\r\n\r\nimport java.util.*;\r\n\r\npublic class Ogretmen {\r\n    public static final String kirmizi = \"\\u001B[31m\";\r\n    public static final String yesil = \"\\u001B[32m\";\r\n    public static final String sari = \"\\u001B[33m\";\r\n    public static final String mavi = \"\\u001B[34m\";\r\n    public static final String mor = \"\\u001B[35m\";\r\n    public static final String beyaz = \"\\u001B[37m\";\r\n    static Scanner input = new Scanner(System.in);\r\n    static Map<String, OgretmenPojo> ogretmenListesi = new HashMap<>();\r\n    static Set<Map.Entry<String, OgretmenPojo>> ogretmenListeSet = ogretmenListesi.entrySet();\r\n    static Set<String> kimlikNumaralariSet = ogretmenListesi.keySet();\r\n\r\n\r\n    public static void ogretmenMenu() {\r\n        System.out.println(yesil+\"-------------------# OGRETMEN SAYFASİ #---------------------\");\r\n\r\n        System.out.println(mavi+\"1. Ekleme\\n\" +\r\n                \"2. Arama\\n\" +\r\n                \"3. Listeleme\\n\" +\r\n                \"4. Silme\\n\" +\r\n                \"5. Anasayfa\\n\" +\r\n                \"Q. Cikis\\n\" );\r\n        System.out.println(mor+ \"Yapmak istediginiz islemi seciniz.\");\r\n\r\n        String secim = input.next().toUpperCase();\r\n\r\n        boolean scm = true;\r\n        do {\r\n            switch (secim) {\r\n                case \"1\":\r\n                    ekleme();\r\n                    scm = false;\r\n                    break;\r\n                case \"2\":\r\n                    arama();\r\n                    scm = false;\r\n                    break;\r\n                case \"3\":\r\n                    listeleme();\r\n                    scm = false;\r\n                    break;\r\n                case \"4\":\r\n                    silme();\r\n                    scm = false;\r\n                    break;\r\n                case \"5\":\r\n                    OkulAnasayfa.okulAnaSayfasi();\r\n                    scm = false;\r\n                    break;\r\n                case \"Q\":\r\n                    System.out.println(yesil+ \"Okul Sayfamizi ziyaret ettiginiz icin tesekkur ederiz\\n\" +\r\n                                              \"Iyi Gunler Dileriz :)\");\r\n                    scm = false;\r\n                    break;\r\n                default:\r\n                    System.out.println(mavi+\"Yanlis bir secim yaptiniz. Tekrar giris yapiniz\");\r\n                    secim = input.next().toUpperCase();\r\n            }\r\n        } while (scm);\r\n\r\n    }\r\n\r\n\r\n    public static void ekleme() {\r\n        System.out.println(kirmizi+\"---------------------------# OGRETMEN EKLEME SAYFASİ #---------------------------------\");\r\n        System.out.println();\r\n        System.out.println(sari+\"Eklemek istediginiz ogretmenin kimlik numrasini giriniz.\");\r\n        String kimlikNumarasi = input.next();\r\n\r\n        if (kimlikNumarasi.matches(\"[0-9]{6}\")) {\r\n            System.out.println(sari+\"Eklemek istediginiz ogretmenin adi giriniz\");\r\n            String ad = input.next();\r\n            System.out.println(sari+\"Eklemek istediginiz ogretmenin soyadi giriniz\");\r\n            String soyad = input.next();\r\n            System.out.println(sari+\"Eklemek istediginiz ogretmenin yasini giriniz\");\r\n\r\n            int yas = input.nextInt();\r\n            System.out.println(sari+\"Eklemek istediginiz ogretmenin bolumunu giriniz\");\r\n            String bolum = input.next();\r\n            System.out.println(sari+\"Eklemek istediginiz ogretmenin sicil numrasini giriniz\");\r\n            String sicilNumarasi = input.next();\r\n\r\n            OgretmenPojo ogretmenObje = new OgretmenPojo(kimlikNumarasi, ad, soyad, yas, bolum, sicilNumarasi);\r\n\r\n            ogretmenListesi.put(kimlikNumarasi, ogretmenObje);\r\n            System.out.println(mor+ \"Ogretmen eklemeye devam etmek icin 1'e basiniz\\n\" +\r\n                                    \"Ogretmen sayfasina donmek icin 2'ye basiniz\\n\" +\r\n                                    \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                ekleme();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogretmenMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n        }\r\n\r\n    }\r\n\r\n\r\n    public static void arama() {\r\n        System.out.println(kirmizi+\"---------------------------# OGRETMEN ARAMA SAYFASİ #---------------------------------\");\r\n        System.out.println(yesil+\"Aramak istediginiz ogretmenin kimlik numarasini giriniz: \");\r\n        String kmlik = input.next();\r\n        System.out.println(sari+\"Kimlik No          Ad                Soyad             Yas               Bolum         Sicil\" +\r\n                \"\\n--------------------------------------------------------------------------------------------------------------\");\r\n\r\n        if (kimlikNumaralariSet.contains(kmlik)) {\r\n            OgretmenPojo ogretmen = ogretmenListesi.get(kmlik);\r\n            System.out.println(ogretmen);\r\n            System.out.println(mor+ \"Ogretmen aramaya devam etmek icin 1'e basiniz.\\n \" +\r\n                                    \"Ogretmen menusune donmek icin 2'ye basiniz\\n\" +\r\n                                    \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                arama();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogretmenMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n        } else {\r\n            System.out.println(kirmizi+\"Yanlis kimlik numarasi girdiniz.\");\r\n            System.out.println();\r\n            System.out.println(mor+ \"Ogretmen aramaya devam etmek icin 1'e basiniz.\\n \" +\r\n                                    \"Ogretmen menusune donmek icin 2'ye basiniz\\n\" +\r\n                                    \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                arama();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogretmenMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n\r\n        }\r\n\r\n\r\n    }\r\n\r\n    public static void listeleme() {\r\n\r\n        System.out.println(kirmizi+\"---------------------------# OGRETMEN LİSTESİ #---------------------------------\");\r\n        System.out.println(sari+\"Kimlik No            Ad                  Soyad               Yas                 Bolum           Sicil\" +\r\n                \"\\n-----------------------------------------------------------------------------------------------------------------\");\r\n\r\n        for (Map.Entry<String, OgretmenPojo> w : ogretmenListeSet) {\r\n            String key = w.getKey();\r\n\r\n            System.out.printf(\"%-20s %-19s %-19s %-19s %-19s %-15s\\n\", key, ogretmenListesi.get(key).getAd(),\r\n                    ogretmenListesi.get(key).getSoyad(), ogretmenListesi.get(key).getYas(), ogretmenListesi.get(key).getBolum(),\r\n                    ogretmenListesi.get(key).getSicilNo());\r\n        }\r\n\r\n        System.out.println(mor+ \"Ogretmen menusune donmek icin 1'ye basiniz\\n\" +\r\n                                \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n        String sss = input.next();\r\n\r\n        if (sss.equals(\"1\")) {\r\n            ogretmenMenu();\r\n        } else {\r\n            OkulAnasayfa.okulAnaSayfasi();\r\n        }\r\n\r\n\r\n    }\r\n\r\n\r\n    public static void silme() {\r\n        System.out.println(kirmizi+\"---------------------------# OGRETMEN SILME SAYFASİ #--------------------------------------------------------\");\r\n        System.out.println(sari+\"Silmek istediginiz ogretmenin Kimlik Numarasini giriniz\");\r\n        String ogrenciSilmeSecim = input.next();\r\n\r\n\r\n        if (kimlikNumaralariSet.contains(ogrenciSilmeSecim)) {\r\n            System.out.println(kirmizi+\"Silinecek ogretmen bilgilerli: \");\r\n            System.out.println(sari+\"Kimlik No          Ad           Soyad         Yas         bolum      Sicil\" +\r\n                    \"\\n-------------------------------------------------------------------------------------------------\");\r\n            System.out.println(ogretmenListesi.get(ogrenciSilmeSecim));\r\n\r\n            ogretmenListesi.remove(ogrenciSilmeSecim);\r\n\r\n\r\n            System.out.println(kirmizi+ \"Ogretmen basariyla silindi.\\n\" );\r\n            System.out.println(mor +    \"Ogretmen silmeye devam etmek icin 1'e basiniz.\\n \" +\r\n                                        \"Ogretmen menusune donmek icin 2'ye basiniz\\n\" +\r\n                                        \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                silme();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogretmenMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n        } else {\r\n            System.out.println(mavi+\"Yanlis kimlik numarasi girdiniz.\");\r\n\r\n            System.out.println(mor+ \"Ogretmen silmeye devam etmek icin 1'e basiniz.\\n \" +\r\n                                    \"Ogretmen menusune donmek icin 2'ye basiniz\\n\" +\r\n                                    \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                silme();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogretmenMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n\r\n        }\r\n\r\n\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/okulyonetimi/yeni/Ogretmen.java b/src/main/java/okulyonetimi/yeni/Ogretmen.java
+--- a/src/main/java/okulyonetimi/yeni/Ogretmen.java	(revision d658a0d648e32982c3ac380ea9e56d2cc294a03a)
++++ b/src/main/java/okulyonetimi/yeni/Ogretmen.java	(date 1668942029717)
+@@ -5,6 +5,7 @@
+ 
+ import java.util.*;
+ 
++
+ public class Ogretmen {
+     public static final String kirmizi = "\u001B[31m";
+     public static final String yesil = "\u001B[32m";
+@@ -71,7 +72,7 @@
+     public static void ekleme() {
+         System.out.println(kirmizi+"---------------------------# OGRETMEN EKLEME SAYFASİ #---------------------------------");
+         System.out.println();
+-        System.out.println(sari+"Eklemek istediginiz ogretmenin kimlik numrasini giriniz.");
++        System.out.println(sari+"Eklemek istediginiz ogretmenin kimlik numrasini 6 haneli olarak giriniz.");
+         String kimlikNumarasi = input.next();
+ 
+         if (kimlikNumarasi.matches("[0-9]{6}")) {
+Index: src/main/java/okulyonetimi/yeni/OgretmenPojo.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package okulyonetimi.yeni;\r\n\r\npublic class OgretmenPojo {\r\n\r\n    public String ad;\r\n    public String soyad;\r\n    private  String kimlikNo;\r\n    public int yas;\r\n    public String bolum;\r\n    private  String sicilNo;\r\n\r\n\r\n\r\n    public OgretmenPojo(String kimlikNo,String ad, String soyad,  int yas, String bolum, String sicilNo) {\r\n        this.kimlikNo = kimlikNo;\r\n        this.ad = ad;\r\n        this.soyad = soyad;\r\n        this.yas = yas;\r\n        this.bolum = bolum;\r\n        this.sicilNo = sicilNo;\r\n    }\r\n\r\n    public String getAd() {\r\n        return ad;\r\n    }\r\n\r\n    public void setAd(String ad) {\r\n        this.ad = ad;\r\n    }\r\n\r\n    public String getSoyad() {\r\n        return soyad;\r\n    }\r\n\r\n    public void setSoyad(String soyad) {\r\n        this.soyad = soyad;\r\n    }\r\n\r\n    public String getKimlikNo() {\r\n        return kimlikNo;\r\n    }\r\n\r\n    public void setKimlikNo(String kimlikNo) {\r\n        this.kimlikNo = kimlikNo;\r\n    }\r\n\r\n    public int getYas() {\r\n        return yas;\r\n    }\r\n\r\n    public void setYas(int yas) {\r\n        this.yas = yas;\r\n    }\r\n\r\n    public String getBolum() {\r\n        return bolum;\r\n    }\r\n\r\n    public void setBolum(String bolum) {\r\n        this.bolum = bolum;\r\n    }\r\n\r\n    public String getSicilNo() {\r\n        return sicilNo;\r\n    }\r\n\r\n    public void setSicilNo(String sicilNo) {\r\n        this.sicilNo = sicilNo;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"\\t\"+kimlikNo+\"\\t\\t\\t\"+ \"\\t\"+ad+\"\\t\\t\\t\" + soyad+\"\\t\\t\\t\" + yas+\"\\t\\t\\t\" + bolum+\"\\t\\t\\t\" + sicilNo+\"\\t\";\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/okulyonetimi/yeni/OgretmenPojo.java b/src/main/java/okulyonetimi/yeni/OgretmenPojo.java
+--- a/src/main/java/okulyonetimi/yeni/OgretmenPojo.java	(revision d658a0d648e32982c3ac380ea9e56d2cc294a03a)
++++ b/src/main/java/okulyonetimi/yeni/OgretmenPojo.java	(date 1668937720627)
+@@ -10,7 +10,6 @@
+     private  String sicilNo;
+ 
+ 
+-
+     public OgretmenPojo(String kimlikNo,String ad, String soyad,  int yas, String bolum, String sicilNo) {
+         this.kimlikNo = kimlikNo;
+         this.ad = ad;
+Index: src/main/java/okulyonetimi/yeni/Ogrenci.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package okulyonetimi.yeni;\r\n\r\nimport okulyonetimi.OgrenciPojo;\r\nimport okulyonetimi.OkulAnasayfa;\r\n\r\nimport java.util.*;\r\n\r\npublic class Ogrenci {\r\n    public static final String kirmizi = \"\\u001B[31m\";\r\n    public static final String yesil = \"\\u001B[32m\";\r\n    public static final String sari = \"\\u001B[33m\";\r\n    public static final String mavi = \"\\u001B[34m\";\r\n    public static final String mor = \"\\u001B[35m\";\r\n    public static final String beyaz = \"\\u001B[37m\";\r\n\r\n    static Scanner input = new Scanner(System.in);\r\n    static Map<String, OgrenciPojo> ogrenciListesi = new HashMap<>();\r\n    static Set<Map.Entry<String, OgrenciPojo>> ogrenciListeSet = ogrenciListesi.entrySet();\r\n    static Set<String> kimlikNumaralariSet1 = ogrenciListesi.keySet();\r\n\r\n    public static void ogrenciMenu() {\r\n        System.out.println(yesil + \"--------------# OGRENCİ SAYFASİ #-----------\");\r\n        System.out.println(mavi + \"1. Ekleme\\n\" +\r\n                \"2. Arama\\n\" +\r\n                \"3. Listeleme\\n\" +\r\n                \"4. Silme\\n\" +\r\n                \"5. Anasayfa\\n\" +\r\n                \"Q. Cikis\\n\");\r\n        System.out.println(mor + \"Yapmak istediginiz islemi seciniz.\");\r\n        String secim = input.next().toUpperCase();\r\n\r\n        boolean scm = true;\r\n        do {\r\n            switch (secim) {\r\n                case \"1\":\r\n                    ekleme();\r\n                    scm = false;\r\n                    break;\r\n                case \"2\":\r\n                    arama();\r\n                    scm = false;\r\n                    break;\r\n                case \"3\":\r\n                    listeleme();\r\n                    scm = false;\r\n                    break;\r\n                case \"4\":\r\n                    silme();\r\n                    scm = false;\r\n                    break;\r\n                case \"5\":\r\n                    OkulAnasayfa.okulAnaSayfasi();\r\n                    scm = false;\r\n                    break;\r\n                case \"Q\":\r\n                    System.out.println(yesil + \"Okul Sayfamizi ziyaret ettiginiz icin tesekkur ederiz\\n\" +\r\n                                               \"Iyi Gunler Dileriz :)\");\r\n                    scm = false;\r\n                    break;\r\n                default:\r\n                    System.out.println(mavi + \"Yanlis bir secim yaptiniz. Tekrar giris yapiniz\");\r\n                    secim = input.next().toUpperCase();\r\n            }\r\n        } while (scm);\r\n\r\n    }\r\n\r\n\r\n    public static void ekleme() {\r\n        System.out.println(kirmizi + \"---------------------------# OGRENCİ EKLEME SAYFASİ #---------------------------------\");\r\n        System.out.println(sari + \"Eklemek istediginiz ogrencinin kimlik numrasini giriniz.\");\r\n        String kimlikNumarasi = input.next();\r\n\r\n        if (kimlikNumarasi.matches(\"[0-9]{6}\")) {\r\n            System.out.println(sari + \"Eklemek istediginiz ogrencinin adi giriniz\");\r\n            String ad = input.next();\r\n            System.out.println(sari + \"Eklemek istediginiz ogrencinin soyadi giriniz\");\r\n            String soyad = input.next();\r\n            System.out.println(sari + \"Eklemek istediginiz ogrencinin yasini giriniz\");\r\n            int yas = input.nextInt();\r\n            int okulNo = (int) (Math.random() * 300);\r\n            int sinif = 9;\r\n\r\n            boolean secim1 = true;\r\n\r\n            do {\r\n                switch (yas) {\r\n                    case 15:\r\n                        sinif = 9;\r\n                        secim1 = false;\r\n                        break;\r\n                    case 16:\r\n                        sinif = 10;\r\n                        secim1 = false;\r\n                        break;\r\n                    case 17:\r\n                        sinif = 11;\r\n                        secim1 = false;\r\n                        break;\r\n                    case 18:\r\n                        sinif = 12;\r\n                        secim1 = false;\r\n                        break;\r\n                    default:\r\n                        System.out.println(mavi + \"Okulumuz yabanci dille egitim veren bir kurumdur. \\n\" +\r\n                                                  \"Okulumuz bir lisedir bu yuzden sadece 15-18 yas arasi ogrenci kabul eder\\n\" +\r\n                                                  \"Ogreniz bu aralikta degildir. Tekrar yas giriniz.\");\r\n                        yas = input.nextInt();\r\n                }\r\n            } while (secim1);\r\n\r\n            OgrenciPojo ogrenciObje = new OgrenciPojo(kimlikNumarasi, ad, soyad, yas, okulNo, sinif);\r\n\r\n            ogrenciListesi.put(kimlikNumarasi, ogrenciObje);\r\n\r\n            System.out.println(mor + \"Ogrenci eklemeye devam etmek icin 1'e basiniz\\n\" +\r\n                                     \"Ogrenci sayfasina donmek icin 2'ye basiniz\\n\" +\r\n                                     \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                ekleme();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogrenciMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n        } else {\r\n            System.out.println(mavi + \"Yanlis yas girdiniz\");\r\n            ekleme();\r\n        }\r\n\r\n\r\n    }\r\n\r\n\r\n    public static void arama() {\r\n        System.out.println(kirmizi + \"---------------------------# OGRENCİ ARAMA SAYFASİ #---------------------------------\");\r\n        System.out.println(yesil + \"Aramak istediginiz ogrencinin kimlik numarasini giriniz: \");\r\n        String kmlik = input.next();\r\n        System.out.println(sari + \"Kimlik No          Ad               Soyad            Yas              OkulNo        Sinif\" +\r\n                \"\\n-----------------------------------------------------------------------------------------------------------\");\r\n\r\n        if (kimlikNumaralariSet1.contains(kmlik)) {\r\n            OgrenciPojo ogrenci = ogrenciListesi.get(kmlik);\r\n            System.out.println(ogrenci);\r\n            System.out.println(mor + \"Ogrenci aramaya devam etmek icin 1'e basiniz.\\n \" +\r\n                                     \"Ogrenci menusune donmek icin 2'ye basiniz\\n\" +\r\n                                     \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                arama();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogrenciMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n        } else {\r\n            System.out.println(mavi + \"Yanlis kimlik numarasi girdiniz.\");\r\n\r\n            System.out.println(mor + \"Ogretmen aramaya devam etmek icin 1'e basiniz.\\n \" +\r\n                                     \"Ogretmen menusune donmek icin 2'ye basiniz\\n\" +\r\n                                     \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                arama();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogrenciMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n\r\n        }\r\n\r\n\r\n    }\r\n\r\n\r\n    public static void listeleme() {\r\n\r\n        System.out.println(kirmizi + \"---------------------------# OGRENCİ LİSTESİ #--------------------------------------------------------\");\r\n        System.out.println(sari + \"Kimlik No           Ad                 Soyad              Yas                OgrenciNo          Sinif\" +\r\n                \"\\n-----------------------------------------------------------------------------------------------------------------\");\r\n\r\n        for (Map.Entry<String, OgrenciPojo> w : ogrenciListeSet) {\r\n            String key = w.getKey();\r\n\r\n            System.out.printf(\"%-20s %-19s %-19s %-19s %-19s %-15s\\n\", key, ogrenciListesi.get(key).getAd(),\r\n                    ogrenciListesi.get(key).getSoyad(), ogrenciListesi.get(key).getYas(), ogrenciListesi.get(key).getOkulNo(),\r\n                    ogrenciListesi.get(key).getSinif());\r\n        }\r\n\r\n        System.out.println(mor + \"Ogrenci menusune donmek icin 1'ye basiniz\\n\" +\r\n                                 \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n        String sss = input.next();\r\n\r\n        if (sss.equals(\"1\")) {\r\n            ogrenciMenu();\r\n        } else {\r\n            OkulAnasayfa.okulAnaSayfasi();\r\n        }\r\n\r\n\r\n    }\r\n\r\n\r\n    public static void silme() {\r\n        System.out.println(kirmizi + \"---------------------------# OGRENCİ SILME SAYFASİ #--------------------------------------------------------\");\r\n        System.out.println(sari + \"Silmek istediginiz ogrencinin Kimlik Numarasini giriniz\");\r\n        String ogrenciSilmeSecim = input.next();\r\n\r\n\r\n        if (kimlikNumaralariSet1.contains(ogrenciSilmeSecim)) {\r\n            System.out.println(kirmizi + \"Silinecek ogrenci bilgilerli: \");\r\n            System.out.println(sari + \"Kimlik No          Ad           Soyad         Yas          OgrenciNo       Sinif\" +\r\n                    \"\\n-------------------------------------------------------------------------------------------------\");\r\n            System.out.println(ogrenciListesi.get(ogrenciSilmeSecim));\r\n\r\n            ogrenciListesi.remove(ogrenciSilmeSecim);\r\n\r\n\r\n            System.out.println(kirmizi + \"Ogrenci basariyla silindi.\\n\");\r\n            System.out.println( mor+     \"Ogrenci silmeye devam etmek icin 1'e basiniz.\\n \" +\r\n                                         \"Ogrenci menusune donmek icin 2'ye basiniz\\n\" +\r\n                    \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                silme();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogrenciMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n        } else {\r\n            System.out.println(mavi + \"Yanlis kimlik numarasi girdiniz.\");\r\n\r\n            System.out.println(mor + \"Ogrenci silmeye devam etmek icin 1'e basiniz.\\n \" +\r\n                                     \"Ogrenci menusune donmek icin 2'ye basiniz\\n\" +\r\n                                     \"Anasayfaya donmek icin baska herhangi bir tusa basiniz\");\r\n\r\n            String sss = input.next();\r\n\r\n            if (sss.equals(\"1\")) {\r\n                silme();\r\n            } else if (sss.equals(\"2\")) {\r\n                ogrenciMenu();\r\n            } else {\r\n                OkulAnasayfa.okulAnaSayfasi();\r\n            }\r\n\r\n\r\n        }\r\n\r\n\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/okulyonetimi/yeni/Ogrenci.java b/src/main/java/okulyonetimi/yeni/Ogrenci.java
+--- a/src/main/java/okulyonetimi/yeni/Ogrenci.java	(revision d658a0d648e32982c3ac380ea9e56d2cc294a03a)
++++ b/src/main/java/okulyonetimi/yeni/Ogrenci.java	(date 1668946869226)
+@@ -13,6 +13,7 @@
+     public static final String mor = "\u001B[35m";
+     public static final String beyaz = "\u001B[37m";
+ 
++
+     static Scanner input = new Scanner(System.in);
+     static Map<String, OgrenciPojo> ogrenciListesi = new HashMap<>();
+     static Set<Map.Entry<String, OgrenciPojo>> ogrenciListeSet = ogrenciListesi.entrySet();
+@@ -68,7 +69,7 @@
+ 
+     public static void ekleme() {
+         System.out.println(kirmizi + "---------------------------# OGRENCİ EKLEME SAYFASİ #---------------------------------");
+-        System.out.println(sari + "Eklemek istediginiz ogrencinin kimlik numrasini giriniz.");
++        System.out.println(sari + "Eklemek istediginiz ogrencinin kimlik numrasini 6 haneli olarak giriniz.");
+         String kimlikNumarasi = input.next();
+ 
+         if (kimlikNumarasi.matches("[0-9]{6}")) {
+@@ -128,7 +129,7 @@
+             }
+ 
+         } else {
+-            System.out.println(mavi + "Yanlis yas girdiniz");
++            System.out.println(mavi + "Yanlis kimlik girdiniz girdiniz");
+             ekleme();
+         }
+ 
+@@ -193,7 +194,7 @@
+         for (Map.Entry<String, OgrenciPojo> w : ogrenciListeSet) {
+             String key = w.getKey();
+ 
+-            System.out.printf("%-20s %-19s %-19s %-19s %-19s %-15s\n", key, ogrenciListesi.get(key).getAd(),
++            System.out.printf("%-20s %-19s %-19s %-19s %-19s %-15s\n", key, ogrenciListesi.get(key).getAd(),//printf liste kullanimini duzgun gosterir..
+                     ogrenciListesi.get(key).getSoyad(), ogrenciListesi.get(key).getYas(), ogrenciListesi.get(key).getOkulNo(),
+                     ogrenciListesi.get(key).getSinif());
+         }
+Index: src/main/java/okulyonetimi/yeni/OgrenciPojo.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package okulyonetimi.yeni;\r\n\r\npublic class OgrenciPojo {//icinde sadece kucuk datalar bulunur...\r\n\r\n    private  String kimlikNo;\r\n    public String ad;\r\n    public String soyad;\r\n\r\n\r\n    public int yas;\r\n\r\n  public int okulNo;\r\n    public int sinif;\r\n\r\n\r\n    public OgrenciPojo( String kimlikNo,String ad,String soyad, int yas, int okulNo, int sinif) {\r\n        this.kimlikNo=kimlikNo;\r\n        this.ad = ad;\r\n        this.soyad = soyad;\r\n        this.yas = yas;\r\n        this.okulNo = okulNo;\r\n        this.sinif = sinif;\r\n\r\n    }\r\n\r\n\r\n    @Override\r\n    public String toString() {\r\n        return kimlikNo+\"\\t\\t\\t\" + ad+\"\\t\\t\\t\" + soyad+\"\\t\\t\\t\" + yas+\"\\t\\t\\t\" + okulNo+\"\\t\\t\\t\" +sinif ;\r\n\r\n    }\r\n\r\n    public String getKimlikNo() {\r\n        return kimlikNo;\r\n    }\r\n\r\n    public void setKimlikNo(String kimlikNo) {\r\n        this.kimlikNo = kimlikNo;\r\n    }\r\n\r\n    public String getAd() {\r\n        return ad;\r\n    }\r\n\r\n    public void setAd(String ad) {\r\n        this.ad = ad;\r\n    }\r\n\r\n    public String getSoyad() {\r\n        return soyad;\r\n    }\r\n\r\n    public void setSoyad(String soyad) {\r\n        this.soyad = soyad;\r\n    }\r\n\r\n    public int getYas() {\r\n        return yas;\r\n    }\r\n\r\n    public void setYas(int yas) {\r\n        this.yas = yas;\r\n    }\r\n\r\n    public int getOkulNo() {\r\n        return okulNo;\r\n    }\r\n\r\n    public void setOkulNo(int okulNo) {\r\n        this.okulNo = okulNo;\r\n    }\r\n\r\n    public int getSinif() {\r\n        return sinif;\r\n    }\r\n\r\n    public void setSinif(int sinif) {\r\n        this.sinif = sinif;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/okulyonetimi/yeni/OgrenciPojo.java b/src/main/java/okulyonetimi/yeni/OgrenciPojo.java
+--- a/src/main/java/okulyonetimi/yeni/OgrenciPojo.java	(revision d658a0d648e32982c3ac380ea9e56d2cc294a03a)
++++ b/src/main/java/okulyonetimi/yeni/OgrenciPojo.java	(date 1668937720600)
+@@ -2,6 +2,7 @@
+ 
+ public class OgrenciPojo {//icinde sadece kucuk datalar bulunur...
+ 
++
+     private  String kimlikNo;
+     public String ad;
+     public String soyad;
+Index: src/main/java/okulyonetimi/yeni/Task.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package okulyonetimi.yeni;\r\n\r\npublic class Task {\r\n    /*\r\n    BİR OKUL YÖNETİM PLATFORMU KODLAYINIZ.\r\n    1.  Bu programda, Öğrenci ve Öğretmen Kayıtları ile ilgili işlemler yapılabilmelidir.\r\n    Kayıtlarda şu bilgiler olabilmelidir.\r\n    Öğretmen: Ad-Soyad,  kimlik No, yaş, bölüm, ve sicil No bilgileri içermelidir.\r\n    Öğrenci: Ad-Soyad,  kimlik No, yaş, numara, sınıf bilgileri içermelidir.\r\n            2.  Program başladığında Kullanıcıya, Öğretmen ve Öğrenci işlemlerini seçebilmesi için\r\n    Aşağıdaki gibi bir menü gösterilsin.\r\n    ====================================\r\n    ÖĞRENCİ VE ÖĞRETMEN YÖNETİM PANELİ\r\n    ====================================\r\n            1- ÖĞRENCİ İŞLEMLERİ\r\n     2- ÖĞRETMEN İŞLEMLERİ\r\n    Q- ÇIKIŞ\r\n    3.  Seçilen Kişi türüne göre aşağıdaki işlemleri gösteren bir alt menü daha gösterilsin.\r\n            ============= İŞLEMLER =============\r\n            1-EKLEME\r\n         2-ARAMA\r\n         3-LİSTELEME\r\n         4-SİLME\r\n         5-ANA MENÜ\r\n    Q-ÇIKIŞ\r\n    SEÇİMİNİZ:\r\n            4.  İşlemler menüsünde seçilen işleme göre bir önceki menüde seçilen Kişi türü ile ilgili\r\n    ekleme, kimlik no ile silme ve arama, var olan tüm kişileri listeleme gibi işlemler yapılabilmelidir.\r\n    Bunun yanında bir üst menüye dönme veya çıkış işlemleri de yapılabilmelidir.\r\n */\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/okulyonetimi/yeni/Task.java b/src/main/java/okulyonetimi/yeni/Task.java
+--- a/src/main/java/okulyonetimi/yeni/Task.java	(revision d658a0d648e32982c3ac380ea9e56d2cc294a03a)
++++ b/src/main/java/okulyonetimi/yeni/Task.java	(date 1668937933927)
+@@ -2,7 +2,7 @@
+ 
+ public class Task {
+     /*
+-    BİR OKUL YÖNETİM PLATFORMU KODLAYINIZ.
++    BİR OKUL YÖNETİM PLATFORMU KODLAYINIZ...
+     1.  Bu programda, Öğrenci ve Öğretmen Kayıtları ile ilgili işlemler yapılabilmelidir.
+     Kayıtlarda şu bilgiler olabilmelidir.
+     Öğretmen: Ad-Soyad,  kimlik No, yaş, bölüm, ve sicil No bilgileri içermelidir.
+Index: src/main/java/okulyonetimi/yeni/OkulAnasayfa.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package okulyonetimi.yeni;\r\n\r\nimport okulyonetimi.Ogrenci;\r\nimport okulyonetimi.Ogretmen;\r\n\r\nimport java.util.Scanner;\r\n\r\n\r\npublic class OkulAnasayfa {\r\n    public static final String kirmizi = \"\\u001B[31m\";\r\n    public static final String yesil = \"\\u001B[32m\";\r\n    public static final String sari = \"\\u001B[33m\";\r\n    public static final String mavi = \"\\u001B[34m\";\r\n    public static final String mor = \"\\u001B[35m\";\r\n    static Scanner input = new Scanner(System.in);\r\n\r\n    public static void okulAnaSayfasi() {\r\n        System.out.println(kirmizi+ \"---------------# Okul Anasayfa #-------------------------\");\r\n\r\n        System.out.println(sari+\"1. Ogrenci Islemleri\\n\" +\r\n                \"2. Ogretmen Islemleri\\n\" +\r\n                \"Q. Cikis\\n\" );\r\n\r\n        System.out.println(mor+\"Yapmak istediginiz islemi seciniz.\");\r\n\r\n        String secim = input.next().toUpperCase();\r\n\r\n        boolean scm = true;\r\n        do {\r\n            switch (secim) {\r\n                case \"1\":\r\n                    Ogrenci.ogrenciMenu();\r\n                    scm = false;\r\n                    break;\r\n                case \"2\":\r\n                    Ogretmen.ogretmenMenu();\r\n                    scm = false;\r\n                    break;\r\n                case \"Q\":\r\n                    System.out.println(yesil+\"Okul Sayfamizi ziyaret ettiginiz icin tesekkur ederiz\\n\" +\r\n                            \"Iyi Gunler Dileriz :)\");\r\n                    scm = false;\r\n                    break;\r\n                default:\r\n                    System.out.println(mavi+\"Yanlis bir secim yaptiniz. Tekrar giris yapiniz\");\r\n                    secim = input.next().toUpperCase();\r\n            }\r\n        } while (scm);\r\n\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/okulyonetimi/yeni/OkulAnasayfa.java b/src/main/java/okulyonetimi/yeni/OkulAnasayfa.java
+--- a/src/main/java/okulyonetimi/yeni/OkulAnasayfa.java	(revision d658a0d648e32982c3ac380ea9e56d2cc294a03a)
++++ b/src/main/java/okulyonetimi/yeni/OkulAnasayfa.java	(date 1668938707786)
+@@ -7,21 +7,27 @@
+ 
+ 
+ public class OkulAnasayfa {
+-    public static final String kirmizi = "\u001B[31m";
+-    public static final String yesil = "\u001B[32m";
+-    public static final String sari = "\u001B[33m";
+-    public static final String mavi = "\u001B[34m";
+-    public static final String mor = "\u001B[35m";
++    public static final String ANSI_RESET = "\u001B[0m";
++    public static final String ANSI_SIYAH = "\u001B[30m";
++    public static final String ANSI_KIRMIZI = "\u001B[31m";
++    public static final String ANSI_YEŞİL = "\u001B[32m";
++    public static final String ANSI_SARI = "\u001B[33m";
++    public static final String ANSI_MAVI = "\u001B[34m";
++    public static final String ANSI_MOR = "\u001B[35m";
++    public static final String ANSI_CYAN = "\u001B[36m";
++    public static final String ANSI_BEYAZ = "\u001B[37m";
++
+     static Scanner input = new Scanner(System.in);
+ 
+     public static void okulAnaSayfasi() {
+-        System.out.println(kirmizi+ "---------------# Okul Anasayfa #-------------------------");
++        System.out.println(ANSI_KIRMIZI+ "---------------# Okul Anasayfa #-------------------------");
+ 
+-        System.out.println(sari+"1. Ogrenci Islemleri\n" +
++        System.out.println(ANSI_SARI+"1. Ogrenci Islemleri\n" +
+                 "2. Ogretmen Islemleri\n" +
+                 "Q. Cikis\n" );
+ 
+-        System.out.println(mor+"Yapmak istediginiz islemi seciniz.");
++        System.out.println(ANSI_MOR+"Yapmak istediginiz islemi seciniz.");
++
+ 
+         String secim = input.next().toUpperCase();
+ 
+@@ -37,12 +43,12 @@
+                     scm = false;
+                     break;
+                 case "Q":
+-                    System.out.println(yesil+"Okul Sayfamizi ziyaret ettiginiz icin tesekkur ederiz\n" +
++                    System.out.println(ANSI_YEŞİL+"Okul Sayfamizi ziyaret ettiginiz icin tesekkur ederiz\n" +
+                             "Iyi Gunler Dileriz :)");
+                     scm = false;
+                     break;
+                 default:
+-                    System.out.println(mavi+"Yanlis bir secim yaptiniz. Tekrar giris yapiniz");
++                    System.out.println(ANSI_MAVI+"Yanlis bir secim yaptiniz. Tekrar giris yapiniz");
+                     secim = input.next().toUpperCase();
+             }
+         } while (scm);
+Index: src/main/java/okulyonetimi/yeni/Runner.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package okulyonetimi.yeni;\r\n\r\nimport okulyonetimi.OkulAnasayfa;\r\n\r\npublic class Runner {\r\n\r\n\r\n    public static void main(String[] args) {\r\n\r\n        OkulAnasayfa.okulAnaSayfasi();\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/okulyonetimi/yeni/Runner.java b/src/main/java/okulyonetimi/yeni/Runner.java
+--- a/src/main/java/okulyonetimi/yeni/Runner.java	(revision d658a0d648e32982c3ac380ea9e56d2cc294a03a)
++++ b/src/main/java/okulyonetimi/yeni/Runner.java	(date 1668940012446)
+@@ -9,5 +9,7 @@
+ 
+         OkulAnasayfa.okulAnaSayfasi();
+ 
++        
++
+     }
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"eb422f6d-9082-4536-b879-b3927d1c7a36\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Ogrenci.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OgrenciPojo.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Ogretmen.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OgretmenPojo.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OkulAnasayfa.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Runner.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Task.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n        <option value=\"Interface\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2HiW7titX9NIfuQfEecPgzOvt4t\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"last_opened_file_path\": \"C:/javadersler/demo/Okul-Yonetimi-Proje/src/main/java/okulyonetimi/yeni\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\" selected=\"Application.okulyonetimi.yeni.Runner\">\r\n    <configuration name=\"Runner\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"okulyonetimi.Runner\" />\r\n      <module name=\"OkulYonetimProjesi\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"okulyonetimi.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"okulyonetimi.yeni.Runner\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"okulyonetimi.yeni.Runner\" />\r\n      <module name=\"OkulYonetimProjesi\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"okulyonetimi.yeni.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.okulyonetimi.yeni.Runner\" />\r\n        <item itemvalue=\"Application.Runner\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"eb422f6d-9082-4536-b879-b3927d1c7a36\" name=\"Changes\" comment=\"\" />\r\n      <created>1668768229521</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1668768229521</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision d658a0d648e32982c3ac380ea9e56d2cc294a03a)
++++ b/.idea/workspace.xml	(date 1668938405152)
+@@ -4,15 +4,16 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="eb422f6d-9082-4536-b879-b3927d1c7a36" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Ogrenci.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OgrenciPojo.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Ogretmen.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OgretmenPojo.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OkulAnasayfa.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Runner.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Task.java" afterDir="false" />
++    <list default="true" id="eb422f6d-9082-4536-b879-b3927d1c7a36" name="Changes" comment="Initial commit">
++      <change afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/Calisma.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Ogrenci.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Ogrenci.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OgrenciPojo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OgrenciPojo.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Ogretmen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Ogretmen.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OgretmenPojo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OgretmenPojo.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OkulAnasayfa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/OkulAnasayfa.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Runner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Runner.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/okulyonetimi/yeni/Task.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -22,12 +23,17 @@
+   <component name="FileTemplateManagerImpl">
+     <option name="RECENT_TEMPLATES">
+       <list>
+-        <option value="Class" />
+         <option value="Interface" />
++        <option value="Class" />
+       </list>
+     </option>
+   </component>
+   <component name="Git.Settings">
++    <option name="PREVIOUS_COMMIT_AUTHORS">
++      <list>
++        <option value="Muhammet Okumus &lt;m.okumus07@gmail.com&gt;" />
++      </list>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="MarkdownSettingsMigration">
+@@ -44,10 +50,29 @@
+     "RunOnceActivity.OpenProjectViewOnStart": "true",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "last_opened_file_path": "C:/javadersler/demo/Okul-Yonetimi-Proje/src/main/java/okulyonetimi/yeni"
++    "last_opened_file_path": "C:/javadersler/demo/Okul-Yonetimi-Proje/src/main/java/okulyonetimi/yeni",
++    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Console Font"
+   }
+ }]]></component>
++  <component name="RecentsManager">
++    <key name="CopyFile.RECENT_KEYS">
++      <recent name="C:\javadersler\demo\Okul-Yonetimi-Proje\src\main\java\okulyonetimi\yeni" />
++    </key>
++  </component>
+   <component name="RunManager" selected="Application.okulyonetimi.yeni.Runner">
++    <configuration name="Calisma" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="okulyonetimi.Calisma" />
++      <module name="OkulYonetimProjesi" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="okulyonetimi.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
+     <configuration name="Runner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+       <option name="MAIN_CLASS_NAME" value="okulyonetimi.Runner" />
+       <module name="OkulYonetimProjesi" />
+@@ -77,6 +102,7 @@
+     <recent_temporary>
+       <list>
+         <item itemvalue="Application.okulyonetimi.yeni.Runner" />
++        <item itemvalue="Application.Calisma" />
+         <item itemvalue="Application.Runner" />
+       </list>
+     </recent_temporary>
+@@ -90,6 +116,14 @@
+       <option name="presentableId" value="Default" />
+       <updated>1668768229521</updated>
+     </task>
++    <task id="LOCAL-00001" summary="Initial commit">
++      <created>1668936153979</created>
++      <option name="number" value="00001" />
++      <option name="presentableId" value="LOCAL-00001" />
++      <option name="project" value="LOCAL" />
++      <updated>1668936153979</updated>
++    </task>
++    <option name="localTasksCounter" value="2" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -103,4 +137,8 @@
+       </map>
+     </option>
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="Initial commit" />
++    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: src/main/java/okulyonetimi/Calisma.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/okulyonetimi/Calisma.java b/src/main/java/okulyonetimi/Calisma.java
+new file mode 100644
+--- /dev/null	(date 1668938182340)
++++ b/src/main/java/okulyonetimi/Calisma.java	(date 1668938182340)
+@@ -0,0 +1,18 @@
++package okulyonetimi;
++
++public class Calisma {
++    public static final String ANSI_RESET = "\u001B[0m";
++    public static final String ANSI_SIYAH = "\u001B[30m";
++    public static final String ANSI_KIRMIZI = "\u001B[31m";
++    public static final String ANSI_YEŞİL = "\u001B[32m";
++    public static final String ANSI_SARI = "\u001B[33m";
++    public static final String ANSI_MAVI = "\u001B[34m";
++    public static final String ANSI_MOR = "\u001B[35m";
++    public static final String ANSI_CYAN = "\u001B[36m";
++    public static final String ANSI_BEYAZ = "\u001B[37m";
++    public static void main(String[] args) {
++
++        System.out.println(ANSI_MAVI + "Bakın bu yazı mavi olarak çıkacaktır ");
++    }
++
++}
